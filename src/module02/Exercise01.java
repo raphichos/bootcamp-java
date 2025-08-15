@@ -1,5 +1,4 @@
 package module02;
-
 import java.util.Scanner;
 
 public class Exercise01 {
