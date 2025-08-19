@@ -4,14 +4,18 @@ import java.util.Scanner;
 
 public class Main {
 
+    // WHY: single scanner for the whole app (avoid creating many); static to use inside static main
     private final static Scanner scanner = new Scanner(System.in);
 
+    // WHY: single PetMachine instance to hold state across menu actions
     private final static PetMachine petMachine = new PetMachine();
 
     public static void main(String[] args) {
+        // WHY: read tokens until newline so next() grabs the full line name; avoids leftover spaces
         scanner.useDelimiter("\\n");
         var option = -1;
 
+        // WHY: interactive program—loop forever until user chooses 0 (System.exit)
         do {
             System.out.println("===Escolha uma das opções===");
             System.out.println("1 - Dar banho no pet");
@@ -26,6 +30,7 @@ public class Main {
             System.out.println("0 - Sair");
             option = scanner.nextInt();
 
+            // WHY: dispatch to the correct action; arrow switch keeps it concise
             switch (option){
                 case 1 -> petMachine.takeAShower();
                 case 2 -> setWater();
@@ -40,9 +45,10 @@ public class Main {
                 default -> System.out.println("Opção inválida");
             }
 
-        }while (true);
+        }while (true); // WHY: menu loop lives until exit option is chosen
     }
 
+    // --- Helpers to keep switch small and add user feedback ---
     private static void setWater(){
         System.out.println("Tentando colocar água na máquina");
         petMachine.addWater();
@@ -65,18 +71,20 @@ public class Main {
 
     private static void checkIfHasPetInMachine() {
         var hasPet = petMachine.hasPet();
+        // WHY: ternary prints one of two messages based on current state
         System.out.println(hasPet ? "Tem pet na máquina" : "Não tem pet na máquina");
     }
 
 
     public static void setPetInPetMachine(){
         var name = "";
+        // WHY: input validation—loop until a non-empty pet name is provided
         while (name == null || name.isEmpty()){
             System.out.println("Informe o nome do pet");
             name = scanner.next();
         }
-        var pet = new Pet(name);
-        petMachine.setPet(pet);
+        var pet = new Pet(name); // WHY: create domain object with initial defaults
+        petMachine.setPet(pet); // WHY: delegate rule checks to machine (encapsulation)
     }
 
 
