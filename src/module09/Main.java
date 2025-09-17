@@ -12,6 +12,7 @@ public class Main {
 
         Produto produto = new Produto(nome, preco, categoria);
 
+        //Input Example: Camiseta 50,80 Roupa
         System.out.println(produto.formatado());
     }
 }
